@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AccessiSpice - Accessible Navigation</title>
+  <style>
+    /* General Body Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    /* Phone Screen Mockup (for Menu and Feedback) */
+    .phone-screen {
+      width: 320px;
+      height: 600px;
+      border: 1px solid #ccc;
+      border-radius: 30px;
+      background-color: #fff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      margin: 20px auto; /* Center the phone screen on larger views */
+    }
+
+    .phone-screen .status-bar {
+      height: 15px;
+      background-color: #f8f8f8;
+      border-bottom: 1px solid #eee;
+      margin: -20px -20px 10px -20px;
+      border-top-left-radius: 29px;
+      border-top-right-radius: 29px;
+    }
+
+    .phone-screen .home-indicator {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 5px;
+      background-color: #333;
+      border-radius: 2.5px;
+    }
+
+    /* Container for most pages (Welcome, Login, Navigation, Settings) */
+    .container {
+      text-align: center;
+      max-width: 300px;
+      width: 100%;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: 20px auto; /* Center the container on larger views */
+    }
+
+    h1, h2, h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .subtitle {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    input, select {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      background: #007bff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-size: 1em;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    button.secondary {
+      background: #28a745;
+    }
+
+    button.secondary:hover {
+      background-color: #218838;
+    }
+
+    .bottom-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+
+    .bottom-buttons button {
+      width: 48%;
+      margin: 0; /* Remove individual button margins */
+    }
+
+    a {
+      display: block;
+      margin-top: 10px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a.back {
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+
+    /* Top Bar for Map and Navigation screens */
+    .top-bar {
+      background-color: #e6e6e6;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .top-bar a {
+      text-decoration: none;
+      font-size: 22px;
+      color: #333;
+    }
+
+    /* Map Specific Styles */
+    .map-container {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 130px); /* top bar + button height */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f9f9f9;
+    }
+
+    .map-container img {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .map-page .bottom-button { /* Specific to the map page with the NAVIGATE button */
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+      background-color: #f9f9f9;
+    }
+
+    .map-page .bottom-button button {
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .map-page .bottom-button button:hover {
+      background-color: #45a049;
+    }
+
+    .map-with-labels .map-container {
+        height: calc(100vh - 50px); /* top bar only */
+    }
+
+    .map-with-labels .label {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .map-with-labels .noise {
+      top: 40%;
+      left: 60%;
+    }
+
+    .map-with-labels .scent {
+      top: 70%;
+      left: 35%;
+    }
+
+    /* Menu Screen Specific Styles */
+    .menu-screen .app-header {
+      font-size: 1.1em;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .menu-screen h1 {
+      font-size: 1.8em;
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .menu-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      flex-grow: 1;
+    }
+
+    .menu-buttons button {
+      width: 100%;
+      padding: 15px 10px;
+      font-size: 1.1em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 0.2s;
+    }
+
+    .menu-buttons button:hover {
+      background-color: #e9e9e9;
+    }
+
+    .bottom-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    .bottom-nav button {
+      padding: 10px 15px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+      width: auto; /* Override general button width */
+    }
+
+    .bottom-nav .back-button {
+      font-size: 1.5em;
+      line-height: 1;
+    }
+
+    .bottom-nav .logout-button {
+      background-color: #ffcccc;
+      border-color: #ff9999;
+    }
+
+    .bottom-nav .logout-button:hover {
+        background-color: #ffb3b3;
+    }
+
+    /* Feedback Screen Specific Styles */
+    .feedback-screen h1 {
+      font-size: 1.8em;
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 5px;
+      text-align: left;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left; /* Align labels */
+      margin-bottom: 15px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      display: inline-block; /* Ensure it respects width/height */
+      margin: 0; /* Remove default margin */
+    }
+
+    .checkbox-group input[type="checkbox"]:checked {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .checkbox-group input[type="checkbox"]:checked::after {
+      content: '\2713';
+      color: white;
+      font-size: 14px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .checkbox-group label {
+        margin-bottom: 0; /* Reset label margin for checkboxes */
+        display: inline-block; /* Allow label and checkbox to be on same line */
+    }
+
+    .send-button-container {
+      text-align: center;
+      margin-top: auto;
+      margin-bottom: 30px;
+    }
+
+    .send-button {
+      width: 80%;
+      padding: 15px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .send-button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Navigation (Guest/Logged In) Specific Styles */
+    .navigation-page .top-bar {
+      margin-bottom: 20px;
+    }
+
+    .navigation-page label {
+        text-align: left;
+        display: block;
+        margin-top: 15px;
+        font-size: 0.95em;
+        color: #444;
+    }
+
+    .navigation-page input[type="checkbox"] {
+        display: inline-block;
+        width: auto;
+        margin-right: 10px;
+    }
+
+    .navigation-page .map-placeholder {
+      height: 200px; /* Smaller placeholder for navigation search */
+      background: #ddd;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 2px dashed #999;
+      border-radius: 10px;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    /* Settings Page Specific Styles */
+    .settings-page h2 {
+        text-align: left;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .settings-page h2 a {
+        display: inline;
+        margin-top: 0;
+        font-size: 1em;
+        color: #007bff;
+    }
+
+    .settings-page label {
+        display: block;
+        text-align: left;
+        margin-top: 15px;
+        margin-bottom: 5px;
+        font-size: 0.95em;
+        color: #444;
+    }
+
+    .settings-page input[type="range"] {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .settings-page .checkbox-group label {
+        margin-left: 0; /* Reset margin for these checkboxes */
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1em;
+    }
+
+    .settings-page .checkbox-group input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        flex-shrink: 0;
+    }
+
+    .settings-page .save-btn {
+        background: #28a745;
+        color: white;
+        padding: 10px;
+        width: 100%;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-top: 25px; /* More space before save button */
+        cursor: pointer;
+        font-size: 1.1em;
+    }
+
+    .settings-page .save-btn:hover {
+        background-color: #218838;
+    }
+
+    /* User Settings Specific Styles */
+    .user-settings-page h2 {
+        text-align: left;
+        margin-bottom: 20px;
+    }
+
+    .user-settings-page h3 {
+        text-align: left;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #555;
+    }
+
+    .user-settings-page .checkbox-group label {
+        margin-left: 20px; /* Indent these specific labels */
+        font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="welcome-page" class="container active-page">
+    <h1>Access Space</h1>
+    <p class="subtitle">Accessible Navigation</p>
+
+    <button onclick="showPage('login-page')">Log In</button>
+    <button onclick="showPage('guest-navigation-page')">Use as Guest</button>
+
+    <div class="bottom-buttons">
+      <button onclick="alert('About Access Space!')">About</button>
+      <button onclick="showPage('settings-page')">Settings</button>
+    </div>
+  </div>
+
+  <div id="login-page" class="container hidden-page">
+    <h2>Access Space</h2>
+    <h3>Log In</h3>
+
+    <input type="email" placeholder="Email" />
+    <input type="password" placeholder="Password" />
+    <a href="#">Forgot Password?</a>
+
+    <button onclick="showPage('logged-in-navigation-page')">Log In</button>
+    <button class="secondary" onclick="alert('Sign Up functionality not implemented.')">Sign Up</button>
+
+    <a href="#" class="back" onclick="showPage('welcome-page')">← Back</a>
+  </div>
+
+  <div id="guest-navigation-page" class="container navigation-page hidden-page">
+    <div class="top-bar">
+      <h2>AccessiSpice</h2>
+      <a href="#" onclick="showPage('settings-page')">⚙️</a>
+    </div>
+
+    <label for="from-guest">From</label>
+    <input type="text" id="from-guest" placeholder="Enter starting point" />
+
+    <label for="to-guest">To</label>
+    <input type="text" id="to-guest" placeholder="Enter destination" />
+
+    <label>Sensory Needs</label>
+    <button onclick="showPage('user-settings-page')">SET UP</button>
+
+    <button class="primary" onclick="showPage('map-page-simple')">SEARCH</button>
+  </div>
+
+  <div id="logged-in-navigation-page" class="container navigation-page hidden-page">
+    <div class="top-bar">
+      <h2>AccessiSpice</h2>
+      <a href="#" onclick="showPage('settings-page')">⚙️</a>
+    </div>
+
+    <label for="from-logged-in">From</label>
+    <input type="text" id="from-logged-in" placeholder="Enter starting point" />
+
+    <label for="to-logged-in">To</label>
+    <input type="text" id="to-logged-in" placeholder="Enter destination" />
+
+    <label><input type="checkbox" checked /> Use Preferences</label>
+    <button onclick="showPage('user-settings-page')">DIFFERENT SET</button>
+
+    <button class="primary" onclick="showPage('map-page-simple')">SEARCH</button>
+  </div>
+
+  <div id="map-page-simple" class="map-page hidden-page">
+    <div class="top-bar">
+      AccessiSpice
+      <a href="#" onclick="showPage('settings-page')">⚙️</a>
+    </div>
+
+    <div class="map-container">
+      <img src="https://via.placeholder.com/600x400?text=Your+Map+Here" alt="Static map">
+    </div>
+
+    <div class="bottom-button">
+      <button onclick="alert('Navigation started!')">NAVIGATE</button>
+    </div>
+  </div>
+
+  <div id="map-page-labels" class="map-with-labels hidden-page">
+    <div class="top-bar">
+      AccessiSpice
+      <a href="#" onclick="showPage('settings-page')">⚙️</a>
+    </div>
+
+    <div class="map-container">
+      <img src="https://via.placeholder.com/600x400?text=Map+with+Labels" alt="Static map">
+      <div class="label noise">Noise</div>
+      <div class="label scent">Scent</div>
+    </div>
+  </div>
+
+  <div id="menu-page" class="phone-screen menu-screen hidden-page">
+    <div class="status-bar"></div>
+    <div class="app-header">AccessiSpice</div>
+    <h1>MENU</h1>
+    <div class="menu-buttons">
+      <button onclick="showPage('settings-page')">SETTINGS</button>
+      <button onclick="alert('Contact Us functionality not implemented.')">CONTACT US</button>
+      <button class="feedback-button" onclick="showPage('feedback-page')">FEEDBACK</button>
+      <button onclick="alert('License information not available.')">LICENSE</button>
+      <button onclick="alert('About AccessiSpice.')">ABOUT</button>
+    </div>
+    <div class="bottom-nav">
+      <button class="back-button" onclick="window.history.back()">&#8592;</button>
+      <button class="logout-button" onclick="showPage('welcome-page')">LOG OUT</button>
+    </div>
+    <div class="home-indicator"></div>
+  </div>
+
+  <div id="feedback-page" class="phone-screen feedback-screen hidden-page">
+    <div class="status-bar"></div>
+    <h1>FEEDBACK</h1>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title">
+    </div>
+    <div class="form-group">
+      <label for="issue">Issue</label>
+      <input type="text" id="issue" name="issue">
+    </div>
+    <div class="form-group checkbox-group">
+      <label for="bug">Bug</label>
+      <input type="checkbox" id="bug" name="bug" checked>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description"></textarea>
+    </div>
+    <div class="send-button-container">
+      <button class="send-button" type="submit" onclick="alert('Feedback sent! (Simulated)')">SEND</button>
+    </div>
+    <div class="home-indicator"></div>
+  </div>
+
+  <div id="settings-page" class="container settings-page hidden-page">
+    <h2>
+      Settings
+      <a href="#" onclick="showPage('user-settings-page')">⚙️</a>
+    </h2>
+    <label for="brightness">Brightness</label>
+    <input type="range" id="brightness" min="0" max="100" value="75" />
+
+    <div class="checkbox-group">
+      <label><input type="checkbox" checked /> Vibration</label>
+      <label><input type="checkbox" checked /> Audio</label>
+    </div>
+
+    <label for="color">Color Scheme</label>
+    <select id="color">
+      <option>Red - Blue</option>
+      <option selected>Dark - Light</option>
+      <option>Black - White</option>
+    </select>
+
+    <button class="save-btn" onclick="alert('Settings Saved!')">Save</button>
+    <a href="#" class="back" onclick="window.history.back()">← Back</a>
+  </div>
+
+  <div id="user-settings-page" class="container user-settings-page hidden-page">
+    <h2>User Settings ⚙️</h2>
+
+    <h2>Requirements</h2>
+    <h3>Audio</h3>
+    <div class="checkbox-group">
+      <label style="margin-left: 20px;"><input type="checkbox" /> Loud</label>
+      <label style="margin-left: 20px;"><input type="checkbox" checked /> Voices</label>
+    </div>
+
+    <h3>Others</h3>
+    <div class="checkbox-group">
+      <label><input type="checkbox" /> Scents</label>
+      <label><input type="checkbox" /> People</label>
+      <label><input type="checkbox" /> Textures</label>
+    </div>
+    <h3>Warnings</h3>
+    <button class="save-btn" onclick="alert('User Settings Saved!')">Save</button>
+    <a href="#" class="back" onclick="window.history.back()">← Back</a>
+  </div>
+
+  <script>
+    // Simple page navigation script
+    function showPage(pageId) {
+      const pages = document.querySelectorAll('.container, .phone-screen, .map-page, .map-with-labels');
+      pages.forEach(page => {
+        page.classList.add('hidden-page');
+        page.classList.remove('active-page');
+      });
+
+      const activePage = document.getElementById(pageId);
+      if (activePage) {
+        activePage.classList.remove('hidden-page');
+        activePage.classList.add('active-page');
+
+        // Add to history for back button functionality
+        history.pushState({ page: pageId }, '', `#${pageId}`);
+      }
+    }
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', (event) => {
+      if (event.state && event.state.page) {
+        showPage(event.state.page);
+      } else {
+        // If no state, go back to welcome page (or default)
+        showPage('welcome-page');
+      }
+    });
+
+    // Initialize to the welcome page and add initial state
+    document.addEventListener('DOMContentLoaded', () => {
+      showPage('welcome-page');
+    });
+  </script>
+
+</body>
+</html>

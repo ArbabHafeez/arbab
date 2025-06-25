@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Settings</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7fa;
+      padding: 40px;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 400px;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      margin: auto;
+    }
+
+    h2, h3 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .checkbox-group {
+      margin-bottom: 20px;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      margin: 8px 0;
+      font-size: 1em;
+      color: #444;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
+
+    .save-btn {
+      background: #28a745;
+      color: white;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95em;
+    }
+
+    .save-btn:hover {
+      background: #218838;
+    }
+
+    .message {
+      margin-top: 15px;
+      color: green;
+      font-weight: 500;
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>User Settings ⚙️</h2>
+
+    <h3>Requirements</h3>
+    <h4>Audio</h4>
+    <div class="checkbox-group">
+      <label><input type="checkbox" /> Loud</label>
+      <label><input type="checkbox" checked /> Voices</label>
+    </div>
+
+    <h4>Others</h4>
+    <div class="checkbox-group">
+      <label><input type="checkbox" /> Scents</label>
+      <label><input type="checkbox" /> People</label>
+      <label><input type="checkbox" /> Textures</label>
+    </div>
+
+    <h4>Warnings</h4>
+    <button class="save-btn" onclick="showMessage()">Save</button>
+    <div class="message" id="saveMessage">✅ Settings saved successfully!</div>
+  </div>
+
+  <script>
+    function showMessage() {
+      document.getElementById("saveMessage").style.display = "block";
+    }
+  </script>
+</body>
+</html>

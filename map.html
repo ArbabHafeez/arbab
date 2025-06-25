@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Map - AccessiSpice</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    .top-bar {
+      background-color: #f2f2f2;
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .top-bar a {
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    .map-container {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 50px);
+    }
+
+    .map-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .label {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .noise {
+      top: 40%;
+      left: 60%;
+    }
+
+    .scent {
+      top: 70%;
+      left: 35%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    AccessiSpice
+    <a href="settings.html">⚙️</a>
+  </div>
+
+  <div class="map-container">
+    <img src="https://as1.ftcdn.net/jpg/02/69/96/14/1000_F_269961460_lFmOftRcM7DBLOtyFuxiXxx2a3g5pmUR.jpg" alt="Static map">
+
+    <div class="label noise">Noise</div>
+    <div class="label scent">Scent</div>
+  </div>
+
+</body>
+</html>

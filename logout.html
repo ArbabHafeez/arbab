@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Map - AccessiSpice</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+    }
+
+    .top-bar {
+      background-color: #e6e6e6;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .top-bar a {
+      text-decoration: none;
+      font-size: 22px;
+      color: #333;
+    }
+
+    .map-container {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 130px); /* top bar + button height */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .map-container img {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .bottom-button {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 20px 0;
+      background-color: #f9f9f9;
+    }
+
+    .bottom-button button {
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .bottom-button button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    AccessiSpice
+    <a href="settings.html">⚙️</a>
+  </div>
+
+  <div class="map-container">
+    <img src="https://img.freepik.com/vektoren-premium/stadtkarte-stadtstrassen-mit-park-und-fluss-gps-navigationsplan-der-innenstadt-abstrakter-staedtischer-transport_163786-697.jpg" alt="Static map">
+    
+  </div>
+
+  <div class="bottom-button">
+    <button onclick="location.href='navigation.html'">NAVIGATE</button>
+    
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings</title>
+  <style>
+    .checkbox-group {
+  text-align: left;
+  margin: 10px 0;
+}
+
+.checkbox-group label {
+  display: block;
+  margin: 5px 0;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.save-btn {
+  background: #28a745;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>
+   Settings 
+  <a href="user setting.html" style="text-decoration: none; font-size: 1em;">⚙️</a>
+</h2>
+    <label for="brightness">Brightness</label>
+    <input type="range" id="brightness" min="0" max="100" />
+
+    <div class="checkbox-group">
+      <label><input type="checkbox" /> Vibration</label>
+      <label><input type="checkbox" /> Audio</label>
+    </div>
+
+    <label for="color">Color Scheme</label>
+    <select id="color">
+      <option>Red - Blue</option>
+      <option>Dark - Light</option>
+      <option>Black - White</option>
+    </select>
+
+    <button onclick="event.preventDefault(); alert('Setting saved successfully!')" class="save-btn">Save</button>
+  </div>
+</body>
+</html>
